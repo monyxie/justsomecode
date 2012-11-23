@@ -1,0 +1,80 @@
+
+				
+<!doctype>
+<html>
+<head>
+<title>Gradient Example</title>
+<script>
+   window.onload = function() {
+      var canvas = document.getElementById("myCanvas");
+
+      var context = canvas.getContext("2d");
+
+      //Let's try the gradient on a rectangle
+
+      // Create a linear gradient 
+      var fillColor = context.createLinearGradient(50,50, 150,50);
+
+      // Set  gradient colors
+      fillColor.addColorStop(0.15,"red");
+      fillColor.addColorStop(0.35,"black");
+      fillColor.addColorStop(0.65,"green");
+      fillColor.addColorStop(0.87,"yellow");
+
+      // Assign gradient object to fillstyle
+      context.fillStyle= fillColor;
+
+      // Draw rectangle
+      context.fillRect(50,50,100,100);
+
+      // With text  
+
+      var fillColorText = context.createLinearGradient(300,50,600,50);
+ 
+      fillColorText.addColorStop(0.2,"red");
+      fillColorText.addColorStop(0.4,"black");
+      fillColorText.addColorStop(0.6,"green");
+      fillColorText.addColorStop(0.8,"yellow");
+
+
+     context.fillStyle= fillColorText;
+
+      context.font="40px verdana";
+      context.textBaseline="top";
+      context.fillText("With text too!", 300,50)
+
+      // Gradient on a diagonal
+      var fillColordiagonal = context.createLinearGradient(50,200, 100,450);
+
+      // Gradient colors
+      fillColordiagonal.addColorStop(0.2,"red");
+      fillColordiagonal.addColorStop(0.4,"black");
+      fillColordiagonal.addColorStop(0.6,"green");
+      fillColordiagonal.addColorStop(0.75,"yellow");
+
+      // Assign gradient object to fillstyle
+      context.fillStyle= fillColordiagonal;
+
+      // Draw  rectangle
+      context.fillRect(50,225, 100,250);
+
+      // Draw radial gradient
+     fillColorRadial = context.createRadialGradient(450,300,0, 450,300,200);
+     fillColorRadial.addColorStop(0, "red");
+     fillColorRadial.addColorStop(0.2, "black");
+     fillColorRadial.addColorStop(0.4, "green");
+     fillColorRadial.addColorStop(0.7, "yellow");
+     context.fillStyle = fillColorRadial;
+     context.rect(300,200,500,400);
+     context.fill();
+
+}
+</script>
+</head>
+<body>
+<div>
+    <p><canvas id="myCanvas" width="600" height="400"></canvas></p>
+</div>
+</body>
+</html>
+
