@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 class Singleton {
     private static $props = array();
@@ -16,5 +17,6 @@ class Singleton {
 $a = new Singleton;
 $b = new Singleton;
 $a->property = "hello world";
-print $b->property;
+print $b->property . PHP_EOL;
+exit(0);
 ?>

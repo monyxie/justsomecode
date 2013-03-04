@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>WebSQL Example</title>
+        <script>
+            var db = {
+                db : null,
+                result : null,
+                init : function () {
+                    this.db = openDatabase('db', '0.1', 'A database', 200000);
+                    if (!this.db) {
+                        alert("Failed to open database!");
+                    }
+                },
+                select : function () {
+                    this.db.transaction( function(tx) {
+                        db.result = null;
+                        tx.executeSql("SELECT * FROM db",
+                        [], 
+                        function(tx, result) { db.result = result; console.log(result);},
+                        function(tx, error) { console.log(error); tx.executeSql("CREATE TABLE db (id INTEGER PRIMARY KEY ASC AUTOINCREMENT, input TEXT)", [], null, function (tx, error){console.log(error);}); });
+                    }
+                    );
+                },
+                insert : function (input) {
+                    this.db.transaction( function(tx) {
+                        tx.executeSql("INSERT INTO db (input) VALUES (?)",
+                        [input], 
+                        function(tx,result){console.log(result);db.select();},
+                        function(tx,error){console.log(error);});
+                    }
+                    );
+                },
+                drop : function () {
+                    this.db.transaction( function(tx) {
+                        tx.executeSql("DROP TABLE db",
+                        [], 
+                        function(){db.select();update();},
+                        function(tx,error){console.log(error);});
+                    }
+                    );
+                }
+            };
+            db.init();
+            //db.select();
+            function update() {
+                if (db.result == null) return;
+                console.log(result);
+
+                dl_result = document.getElementById('result');
+                dl_result.innerHTML = '';
+                for (var i=0; i<result.rows.length; i++) {
+                    dl_result.innerHTML += '<dt>' + result.rows.item(i)['id'] + '</dt>';
+                    dl_result.innerHTML += '<dd>' + result.rows.item(i)['input'] + '</dd>';
+                }
+                result = null;
+            };
+        </script>
+        <style>
+            #result dt { border: 1px solid #E2E2E2 }
+            #result dd { border: 1px solid #E2E2E2 }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <hgroup>
+                <h1>WebSQL Example</h1>
+            </hgroup>
+        </header>
+
+        <form id="db_insert">
+            <fieldset>
+                <div>
+                    <label for="input">Insert:</label>
+                    <input id="input" type="text" name="input" placeholder="into WebSQL database" required autofocus>
+                    <button type="button" name="input" onclick="db.insert(document.getElementById('input').value)" value="Let me in!">Insert</button>
+                    <button type="button" name="select" onclick="db.select();">Select</button>
+                    <button type="button" name="select" onclick="if(confirm('DROP TABLE db?')) db.drop();">Drop</button>
+                </div>
+            </fieldset>
+        </form>
+        <section>
+            <h2>Item(s) in the database:</h2>
+            <dl id="result">
+            </dl>
+        </section>
+    </body>
+</html>
+            
+
+            
+
